@@ -282,6 +282,7 @@ maak_ballenchaos(void) {
 	gui_refresh(map, &kareltje);
 }
 
+// copy-paste uit charles_package
 void teken_rechthoek ( int links, int onder, int breedte, int hoogte )
 {
 	for (int hor = links; hor<=links+breedte; hor++)
@@ -302,6 +303,7 @@ void teken_rechthoek ( int links, int onder, int breedte, int hoogte )
 	gui_refresh(map, &kareltje);
 }
 
+// copy-paste uit charles_package
 void maak_muur ( int links, int onder, int aantal, bool horizontaal )
 {
     if (horizontaal)
@@ -324,7 +326,7 @@ void maak_muur ( int links, int onder, int aantal, bool horizontaal )
 	gui_refresh(map, &kareltje);
 }
 
-
+// copy-paste uit charles_package
 void
 creeer_bal(int x, int y) {
     if (x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT)
@@ -398,6 +400,7 @@ maak_doolhof(void) {
 	gui_refresh(map, &kareltje);
 }
 
+// copy-paste uit charles_package
 void
 maak_ballenpad ()			// toegevoegd in origineel door Peter
 {
@@ -413,6 +416,7 @@ maak_ballenpad ()			// toegevoegd in origineel door Peter
 	gui_refresh(map, &kareltje);
 }
 
+// copy-paste uit charles_package
 void
 cave_wall (direction richting)    // toegevoegd in origineel door Peter
 {
@@ -440,6 +444,7 @@ cave_wall (direction richting)    // toegevoegd in origineel door Peter
     }
 }
 
+// copy-paste uit charles_package
 void
 make_cave()               // toegevoegd in origineel door Peter
 {
