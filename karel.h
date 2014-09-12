@@ -27,9 +27,8 @@ void maak_ballensnoer(void);
 void maak_ballenchaos(void);
 void maak_doolhof(void);
 
-/* Te maken */
-void loop_terug_naar_beginpositie(void);
-void teken_rechthoek(void);
-void ruim_ballensnoer_op(void);
-void ruim_ballenchaos_op(void);
-void verlaat_doolhof(void);
+typedef void voidfunc_t(void);
+struct command {
+	const char* name;
+	const voidfunc_t* cmd;
+};

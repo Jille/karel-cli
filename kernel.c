@@ -23,18 +23,7 @@ void resetmap(void);
 static hokje map[MAP_HEIGHT][MAP_WIDTH];
 static struct karel kareltje;
 
-typedef void voidfunc_t(void);
-
-struct command {
-	const char* name;
-	const voidfunc_t* cmd;
-} const commands[] = {
-	{"teken_rechthoek", teken_rechthoek},
-	{"ruim_ballensnoer_op", ruim_ballensnoer_op},
-	{"ruim_ballenchaos_op", ruim_ballenchaos_op},
-	{"verlaat_doolhof", verlaat_doolhof},
-	{NULL}
-};
+extern command commands[];
 
 int
 main(int argc, char **argv) {
