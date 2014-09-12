@@ -25,6 +25,17 @@ static struct karel kareltje;
 
 typedef void voidfunc_t(void);
 
+struct command {
+	const char* name;
+	const voidfunc_t* cmd;
+} const commands[] = {
+	{"teken_rechthoek", teken_rechthoek},
+	{"ruim_ballensnoer_op", ruim_ballensnoer_op},
+	{"ruim_ballenchaos_op", ruim_ballenchaos_op},
+	{"verlaat_doolhof", verlaat_doolhof},
+	{NULL}
+};
+
 int
 main(int argc, char **argv) {
 	kareltje.x = 1;
@@ -37,6 +48,12 @@ main(int argc, char **argv) {
 #endif
 	if(argc == 1) {
 		printf("Usage: %s <command, [command... ]>\n", argv[0]);
+		printf("commands: ");
+		for(const command* cmd = commands; cmd->name != NULL;cmd++) {
+			printf("%s", cmd->name);
+			if ((cmd+1)->name != NULL) printf(", ");
+		}
+		printf("\n");
 		exit(0);
 	}
 	gui_init();
@@ -44,15 +61,15 @@ main(int argc, char **argv) {
 	gui_refresh(map, &kareltje);
 	while(--argc) {
 		++argv;
-		if(strcmp(*argv, "teken_rechthoek") == 0) {
-			teken_rechthoek();
-		} else if(strcmp(*argv, "ruim_ballensnoer_op") == 0) {
-			ruim_ballensnoer_op();
-		} else if(strcmp(*argv, "ruim_ballenchaos_op") == 0) {
-			ruim_ballenchaos_op();
-		} else if(strcmp(*argv, "verlaat_doolhof") == 0) {
-			verlaat_doolhof();
-		} else {
+		const command* cmd = commands;
+		while(cmd->name != NULL) {
+			if (strcmp(*argv, cmd->name) == 0) {
+				cmd->cmd();
+				break;
+			}
+			cmd++;
+		}
+		if (cmd->name == NULL) {
 			gui_die("Onbekende functie");
 		}
 	}
