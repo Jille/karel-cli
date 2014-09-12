@@ -6,6 +6,13 @@
  * this stuff is worth it, you can buy me a beer in return.   Jille Timmermans
  * ----------------------------------------------------------------------------
  */
+#include <stdlib.h>
+#include "kernel.h"
+/* adaptation helpers */
+#define rand random
+#define WereldHoogte MAP_HEIGHT
+#define WereldBreedte MAP_WIDTH
+#define min(a,b) (((a) < (b)) ? (a) : (b))
 
 /* Acties */
 void stap(void);
@@ -32,3 +39,29 @@ struct command {
 	const char* name;
 	const voidfunc_t* cmd;
 };
+
+
+// english version of functions
+void step		() ;
+void turn_left 	() ;
+void turn_right	() ;
+bool on_ball	    () ;
+void get_ball	() ;
+void put_ball	() ;
+
+bool in_front_of_wall    () ;
+bool north		() ;
+
+void rest		(int n) ;
+void makeWorldEmpty () ;
+
+void steps ( int ) ;
+void place_rectangle (int, int, int, int) ;
+void place_walls (int, int, int, bool) ;
+void make_string_with_balls () ;
+void make_chaos_with_balls () ;
+void make_labyrinth () ;
+void make_path_with_balls () ;			// toegevoegd in origineel door Peter Achten dd 8 sept 09
+void create_ball (int x, int y) ;        // toegevoegd in origineel door Peter Achten 21 aug 13
+
+void make_cave();               // toegevoegd in origineel door Peter

@@ -180,9 +180,8 @@ pak_bal(void) {
 void
 stappen(int s) {
 	while(s--) {
-		stap_undelayed();
+		stap();
 	}
-	gui_refresh(map, &kareltje);
 }
 
 void
@@ -283,6 +282,58 @@ maak_ballenchaos(void) {
 	gui_refresh(map, &kareltje);
 }
 
+void teken_rechthoek ( int links, int onder, int breedte, int hoogte )
+{
+	for (int hor = links; hor<=links+breedte; hor++)
+	{
+		map[MAP_HEIGHT-onder][hor]        = MUUR ;
+		map[MAP_HEIGHT-(onder+hoogte)][hor] = MUUR ;
+	};
+
+	for (int vert = onder; vert<=onder+hoogte; vert++)
+	{
+		map[MAP_HEIGHT-vert][links]         = MUUR ;
+		map[MAP_HEIGHT-vert][links+breedte] = MUUR ;
+	};
+
+	if(map[kareltje.y][kareltje.x] == MUUR) {
+		gui_die("You got hit by a wall");
+	}
+	gui_refresh(map, &kareltje);
+}
+
+void maak_muur ( int links, int onder, int aantal, bool horizontaal )
+{
+    if (horizontaal)
+    {
+        for (int x = links ; x <= links + aantal ; x++)
+        {
+            map[MAP_HEIGHT-onder][x] = MUUR ;
+        }
+    }
+    else
+    {
+        for (int y = onder; y <= onder+aantal ; y++)
+        {
+            map[MAP_HEIGHT-y][links] = MUUR ;
+        }
+    }
+	if(map[kareltje.y][kareltje.x] == MUUR) {
+		gui_die("You got hit by a wall");
+	}
+	gui_refresh(map, &kareltje);
+}
+
+
+void
+creeer_bal(int x, int y) {
+    if (x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT)
+    {
+        map[MAP_HEIGHT-y-1][x] = BAL;
+        gui_refresh(map, &kareltje);
+    }
+}
+
 void
 maak_doolhof(void) {
 	int kx, ky, kd, bx, by, hmuren, vmuren;
@@ -346,3 +397,77 @@ maak_doolhof(void) {
 	//fclose(fh);
 	gui_refresh(map, &kareltje);
 }
+
+void
+maak_ballenpad ()			// toegevoegd in origineel door Peter
+{
+	resetmap();
+
+	for (int ix = 1; ix < MAP_WIDTH-2; ix++)				map[MAP_HEIGHT/2][ix] = BAL;
+	for (int iy = MAP_HEIGHT/2; iy < MAP_HEIGHT-3; iy++)	map[iy][MAP_WIDTH-3]  = BAL;
+	for (int ix = MAP_WIDTH-3; ix >= MAP_WIDTH / 2; ix--)	map[MAP_HEIGHT-4][ix] = BAL;
+	for (int iy = MAP_HEIGHT-4; iy >= 1; iy--)				map[iy][MAP_WIDTH/2]  = BAL;
+	for (int ix = MAP_WIDTH / 2; ix >= 2; ix--)		    	map[1][ix]            = BAL;
+	for (int iy = 1; iy <= MAP_HEIGHT / 2 - 3; iy++)		map[iy][2]            = BAL;
+
+	gui_refresh(map, &kareltje);
+}
+
+void
+cave_wall (direction richting)    // toegevoegd in origineel door Peter
+{
+    const int marge       = MAP_HEIGHT / 3 ;
+    const int max_breedte = MAP_WIDTH / 10 ;
+
+    for (int ix = 2; ix <= MAP_WIDTH-3; )
+    {
+        const int breedte = rand() % (min (max_breedte, MAP_WIDTH - ix - 2)) + 1 ;
+        const int dy = rand() % marge + 2 ;
+        int y ;
+        if (richting == NOORD)
+        {
+            y = dy ;
+        }
+        else
+        {
+            y = MAP_HEIGHT - dy - 1 ;
+        }
+        for (int i=1; i <= breedte; i++)
+        {
+            map[y][ix] = MUUR ;
+            ix++ ;
+        }
+    }
+}
+
+void
+make_cave()               // toegevoegd in origineel door Peter
+{
+    resetmap();
+
+    cave_wall (NOORD) ;
+    cave_wall (ZUID) ;
+	gui_refresh(map, &kareltje);
+}
+
+// For English version:
+void step			() { stap(); }
+void turn_left 		() { linksom(); }
+void turn_right		() { rechtsom(); }
+bool on_ball		() { return op_bal(); }
+void get_ball		() { pak_bal(); }
+void put_ball		() { leg_bal(); }
+
+bool in_front_of_wall    () { return muur_voor(); }
+bool north			() { return noord(); }
+
+void makeWorldEmpty () { resetmap(); }
+void place_rectangle        (int left, int bottom, int width, int height)  { teken_rechthoek(left,bottom,width,height); }
+void place_walls            (int left, int bottom, int nr_of_walls, bool horizontal) { maak_muur(left,bottom,nr_of_walls,horizontal); }
+void make_string_with_balls ()  { maak_ballensnoer (); }
+void make_chaos_with_balls  ()  { maak_ballenchaos(); }
+void make_path_with_balls   ()  { maak_ballenpad(); }
+void make_labyrinth         ()  { maak_doolhof(); }
+void create_ball            (int x, int y) { creeer_bal(x,y); }
+
+void steps (int number_of_steps) { stappen(number_of_steps ) ; }

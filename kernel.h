@@ -6,6 +6,8 @@
  * this stuff is worth it, you can buy me a beer in return.   Jille Timmermans
  * ----------------------------------------------------------------------------
  */
+#ifndef KERNEL_H
+#define KERNEL_H
 
 #define MAP_WIDTH	70
 #define MAP_HEIGHT	35
@@ -27,4 +29,6 @@ void _gui_die(char *);
 #define gui_die(x) _gui_die((char *)x)
 #else
 #define gui_die(x) _gui_die(x)
+#endif
+
 #endif
