@@ -21,6 +21,7 @@ gui_init(void) {
 
 void
 gui_end(void) {
+	printf("\033[%dB", MAP_HEIGHT);
 	exit(0);
 }
 
@@ -60,11 +61,13 @@ gui_refresh(hokje map[MAP_HEIGHT][MAP_WIDTH], struct karel *karel) {
 		}
 		putchar('\n');
 	}
+	printf("\033[%dA", MAP_HEIGHT);
 	usleep(delay);
 }
 
 void
 _gui_die(char *str) {
+	printf("\033[%dB", MAP_HEIGHT);
 	printf("\n%s\n", str);
 	exit(0);
 }

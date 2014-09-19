@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "karel.h"
 
 int delay = 50000;
@@ -190,3 +191,10 @@ void verlaat_doolhof ()
 
 	ga_terug_naar_uitgangspositie();
 }
+command commands[] = {
+	{"teken_rechthoek", teken_rechthoek},
+	{"ruim_ballensnoer_op", ruim_ballensnoer_op},
+	{"ruim_ballenchaos_op", ruim_ballenchaos_op},
+	{"verlaat_doolhof", verlaat_doolhof},
+	{NULL}
+};

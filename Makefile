@@ -3,25 +3,32 @@
 CFLAGS=	-Wall -Werror -g
 CC=	g++
 
+CFILES := gui.c karel.c kernel.c ncgui.c
+OFILES := $(CFILES:%.c=%.o)
+
 karel: karel.o kernel.o gui.o
-	$(CC) -o karel karel.o kernel.o gui.o
+	$(CC) -o karel $^
 
 nckarel: karel.o kernel.o ncgui.o
-	$(CC) -o nckarel -lncurses karel.o kernel.o ncgui.o
+	$(CC) -o nckarel -lncurses $^
+
+ifeq ($(MAKECMDGOALS),)
+-include Makefile.dep
+endif
+ifneq ($(filter-out clean, $(MAKECMDGOALS)),)
+-include Makefile.dep
+endif
+
+.PHONY: clean all depend
+.SUFFIXES:
 
 all: clean karel nckarel
 
-karel.o: karel.c
-	$(CC) -c $(CFLAGS) karel.c
+%.o: %.c
+	$(CC) -c $(CFLAGS) -o $@ $<
 
-kernel.o: kernel.c kernel.h
-	$(CC) -c $(CFLAGS) kernel.c
-
-gui.o: gui.c kernel.h
-	$(CC) -c $(CFLAGS) gui.c
-
-ncgui.o: ncgui.c kernel.h
-	$(CC) -c $(CFLAGS) ncgui.c
+Makefile.dep: $(CFILES)
+	for i in $(^); do $(CC) $(CFLAGS) -MM "$${i}" -MT `basename $${i%.*}`.o; done > $@
 
 clean:
-	rm -f karel nckarel karel.o kernel.o gui.o ncgui.o
+	rm -f karel nckarel $(OFILES) Makefile.dep
